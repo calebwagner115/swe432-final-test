@@ -16,7 +16,7 @@ function PopcornSales(props) {
     const val1 = document.getElementById('box1').value;
     const val2 = document.getElementById('box2').value;
     const val3 = document.getElementById('box3').value;
-    const ans = val1 + ',' + val2 + ',' + val3
+    const ans = val1 || val2 || val3 ? val1 + ',' + val2 + ',' + val3: '';
     setOutput(ans);
   };
 
