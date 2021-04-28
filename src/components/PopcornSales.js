@@ -4,155 +4,66 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import { css } from '@emotion/react';
 import getPlace from "../core/popcorn";
 
-function numberOnly(value, fallbackValue) {
-  if (isNaN(value)) {
-    return fallbackValue;
-  } else {
-    return value;
-  }
-}
-
 function PopcornSales(props) {
   const {
     zipURL="https://swe432tomcat.herokuapp.com/zipLookup",
     library = "fetch",
   } = props;
-  const [addressZip, setAddressZip] = useState("");
-  const [addressState, setAddressState] = useState("");
-  const [addressCity, setAddressCity] = useState("");
-  const [zipError, setZipError] = useState(null);
 
-  // gets the response text, splits it into city and state, and puts them in the document
-  const getPlaceSuccessCallback = useCallback((result) => {
-    const { city, state } = result;
-    if (state && city) {
-      setAddressState(state);
-      setAddressCity(city);
-    }
-  }, []);
+  let [output, setOutput] = useState('');
 
-  // handles request error
-  const getPlaceFailureCallback = useCallback(() => {
-    setZipError(
-      "ZIP service unavailable, please check your internet connection an try again."
-    );
-  }, []);
+  const doSeparator = () => {
+    const val1 = document.getElementById('box1').value;
+    const val2 = document.getElementById('box2').value;
+    const val3 = document.getElementById('box3').value;
+    const ans = val1 + ',' + val2 + ',' + val3
+    setOutput(ans);
+  };
 
-  const handleAddressZipChange = useCallback((event) => {
-    setAddressZip((currentAddressZip) => {
-      const nextAddressZip = event.target.value;
-      return numberOnly(nextAddressZip, currentAddressZip);
-    });
-  }, []);
-
-  const handleAddressStateChange = useCallback((event) => {
-    setAddressState(event.target.value);
-  }, []);
-
-  const handleAddressCityChange = useCallback((event) => {
-    setAddressCity(event.target.value);
-  }, []);
+  const doReverse = () => {
+    const val1 = document.getElementById('box1').value;
+    const val2 = document.getElementById('box2').value;
+    const val3 = document.getElementById('box3').value;
+    const ans = val1.split("").reverse().join("") 
+    + val2.split("").reverse().join("")
+    + val3.split("").reverse().join("");
+    setOutput(ans);
+  };
 
   const focusedElementRef = useRef();
   useEffect(() => {
     // focusedElementRef.current.focus(); // commented in codesandbox for "obvious" reasons
   }, []);
 
-  useEffect(() => {
-    setZipError(null);
-    if (addressZip.length > 4 && !addressState && !addressCity) {
-      getPlace(zipURL, addressZip, getPlaceSuccessCallback, getPlaceFailureCallback, library);
-    }
-  }, [
-    zipURL,
-    library,
-    addressZip,
-    getPlaceSuccessCallback,
-    getPlaceFailureCallback,
-    addressState,
-    addressCity
-  ]);
+  const test = 'HELP';
 
   return (
-    <div css={css`
-      position: relative;
-    `}>
-      <h2>Welcome to SWE Popcorn Sales</h2>
-      {/* <form action="" name="addressForm"> */}
-      {/* <!-- A borderless table of text widgets for name and address --> */}
-      <table>
-        <tr>
-          <td> Buyer's name: </td>
-          <td>
-            <input type="text" name="name" size="30" ref={focusedElementRef} />
-          </td>
-        </tr>
-        <tr>
-          <td> Street address: </td>
-          <td>
-            <input type="text" name="street" size="30" />
-          </td>
-        </tr>
-        <tr>
-          <td> Zip code: </td>
-          {/* <!-- Call JS function getPlace() when zip code box is changed --> */}
-          <td>
-            <input
-              type="text"
-              name="zip"
-              size="10"
-              value={addressZip}
-              onChange={handleAddressZipChange}
-            />
-          </td>
-        </tr>
-        <tr>
-          <td> City: </td>
-          <td>
-            <input
-              type="text"
-              name="city"
-              id="city"
-              size="30"
-              value={addressCity}
-              onChange={handleAddressCityChange}
-            />
-          </td>
-        </tr>
-        <tr>
-          <td> State: </td>
-          <td>
-            <input
-              type="text"
-              name="state"
-              id="state"
-              size="30"
-              value={addressState}
-              onChange={handleAddressStateChange}
-            />
-          </td>
-        </tr>
-      </table>
+    <div className="columns">
+      <h2>Welcome to Caleb Wagner's SWE 432 Practice Tech Challenge</h2>
 
-      <img
-        src="https://www.cs.gmu.edu/~offutt/classes/432/examples/ajax/popcorn/popcorn.jpg"
-        alt="popcorn"
-        css={css`
-          position: absolute;
-          left: 400px;
-          top: 50px;
-        `}
-      />
+      <div>
+        <input id="box1" type="text"></input>
+        <br/>
+      </div>
 
-      {/* <!-- The submit and reset buttons --> */}
-      <p>
-        <input type="submit" value="Submit Order" />
-        <input type="reset" value="Clear Order Form" />
-      </p>
-      {/* </form> */}
-      <div style={{ color: "red" }}>{zipError}</div>
+      <div>
+        <input id="box2" type="text"></input>
+        <br/>
+      </div>
+
+      <div>
+        <input id="box3" type="text"></input>
+        <br/>
+      </div>
+
+      <button onClick={doSeparator}>Separator</button>
+      <button onClick={doReverse}>Reverse</button>
+    <div>
+      <h2>Output:</h2>
+      <p>{output}</p>
+    </div>
     </div>
   );
-}
+} 
 
 export default PopcornSales;

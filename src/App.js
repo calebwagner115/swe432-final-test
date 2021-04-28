@@ -86,10 +86,10 @@ export default function App(props) {
       </AppBar>
       <Box sx={tabsSX}>
         <Tabs value={currentTab} onChange={handleChangeCurrentTab}>
-          <Tab label="Popcorn Sales" />
-          <Tab label="Fetcher" />
+          <Tab label="Practice Tech Challenge" />
+          {/* <Tab label="Fetcher" />
           <Tab label="Hooks" />
-          <Tab label="Toggle Buttons" />
+          <Tab label="Toggle Buttons" /> */}
         </Tabs>
       </Box>
       <TabPanel value={currentTab} index={0}>
